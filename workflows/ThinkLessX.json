@@ -1,0 +1,886 @@
+{
+  "name": "ThinkLessX – Telegram AI Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        752
+      ],
+      "id": "df582427-a305-49f8-b740-b5eae9d9a8bd",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0f1f1240-a3a3-42d3-a443-88f08838db50",
+              "leftValue": "={{ $json.message.document.mime_type }}",
+              "rightValue": "=text/plain",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -656,
+        480
+      ],
+      "id": "483da493-0fd3-4820-a65a-bdb4a1e0eca2",
+      "name": "document separation txt & pdf"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        -896
+      ],
+      "id": "86935905-585c-4b8b-b9e2-e3a1367ba36c",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "02f1d27c-a379-45d2-97dc-6e16195732bf",
+              "name": "ParsedResults[0].ParsedText",
+              "value": "={{ $json.ParsedResults[0].ParsedText }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        208
+      ],
+      "id": "b737659e-aaee-4ff5-ab8a-c3b417d0b415",
+      "name": "separate extracted text"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a6eafcda-182f-4fe8-8546-a77f9a84dd94",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -208,
+        752
+      ],
+      "id": "51819ba2-f06a-4bba-9c14-d04559b01fda",
+      "name": "extracted text from pdf"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.ParsedResults[0].ParsedText }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "bdd3daaa-becb-4077-a516-c526439c39da"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "parse text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b29a9779-62d6-44f0-89ae-17a0aa1f8ff4",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8a482848-9557-42ec-a922-31c6690d1855",
+                    "leftValue": "={{ $json.data }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "extracted text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ddae3edb-4e8c-43c0-bac2-40f135c740a9",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        480
+      ],
+      "id": "9eb776c0-5436-45b8-83ac-c35378c0e4da",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        464
+      ],
+      "id": "3cb688e1-6ef7-479b-9c41-c32507e2f2a9",
+      "name": "extracted text from txt"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
+      "typeVersion": 1,
+      "position": [
+        480,
+        768
+      ],
+      "id": "2e75fd02-afbf-44b6-a84b-ced7225f71e6",
+      "name": "Cohere Chat Model",
+      "credentials": {
+        "cohereApi": {
+          "id": "JfOI9sPsECy6Ovvh",
+          "name": "CohereApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=OCR_TEXT:\n{{ $json.ParsedResults[0].ParsedText }}\n\nPDF_TEXT:\n{{$json.text}}\n\nTXT_TEXT:\n{{ $json.data }}\n\nMESSAGE_TEXT:\n{{ $json.message.text }}\n\nRAW_TEXT:\n{{$json.text}}\n",
+        "options": {
+          "systemMessage": "=You are a Text Unification Engine.\n\nYour job is to receive text extracted from different sources such as:\n- OCR (images, screenshots)\n- PDF extraction\n- TXT files\n- API responses\n- Raw Telegram messages\n\nThe input may be:\n- fragmented\n- duplicated\n- noisy\n- partially structured\n- out of order\n\nYour task is NOT to summarize.\nYour task is to PRODUCE ONE clean, coherent, decision-ready text.\n\nRules (VERY IMPORTANT):\n1. Merge all meaningful content into ONE continuous text.\n2. Remove:\n   - duplicate sentences\n   - OCR artifacts\n   - broken line wraps\n   - page numbers, headers, footers\n   - random symbols or encoding noise\n3. Preserve:\n   - factual meaning\n   - intent\n   - important numbers, dates, names\n4. Fix grammar and sentence flow ONLY if it improves clarity.\n5. Do NOT add new information.\n6. Do NOT explain what you are doing.\n7. Do NOT format as markdown.\n8. Do NOT summarize or shorten unless text is clearly duplicated.\n9. Output MUST be plain text only.\n\nIf the input contains multiple sections, merge them logically into a single readable flow.\n\nIf the input is already clean, return it as-is.\n\nYour output will be used for downstream decision analysis, so clarity and completeness matter more than brevity.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        304,
+        496
+      ],
+      "id": "638f852b-4918-4a8b-84ad-80dfe1e62efe",
+      "name": "Text Unification"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "You are an Intent-Aware Decision Bot that replies directly to the user on Telegram.\n\nYou receive ONE clean block of text.\nThe text may be an email, message, notice, certificate, offer, joining letter, alert, or instruction.\n\nYour job is to:\n1. Identify the INTENT of the message.\n2. Detect the SENTIMENT (positive, neutral, negative).\n3. Decide what ACTION the user should take.\n4. Explain the decision clearly to the user.\n\nYou must internally choose ONE action:\n- ACT_NOW\n- STORE\n- DEFER\n- IGNORE\n- THINK_LATER\n\nRules (STRICT):\n1. Do NOT output JSON.\n2. Do NOT mention internal decision labels.\n3. Do NOT mention AI, models, or analysis.\n4. Do NOT ask questions.\n5. Do NOT use emojis.\n6. Keep the reply 3–6 sentences.\n7. Be clear, human, and helpful.\n8. Always explain:\n   - whether action is required\n   - what the action is (if any)\n   - why it is required or not required\n9. Adapt tone naturally based on sentiment:\n   - Positive → supportive, encouraging, professional\n   - Neutral → clear, informative\n   - Negative → calm, respectful, composed\n\nDecision logic (MANDATORY):\n- Messages with instructions, dates, reporting details, confirmations, approvals, deadlines, or onboarding steps → ACT_NOW\n- Certificates, achievements, records, confirmations with no next step → STORE\n- Informational messages that may matter later → THINK_LATER\n- Messages with no impact → IGNORE\n- Messages that require action later → DEFER\n\nResponse variety rules:\n- Do NOT repeat the same sentence structure every time.\n- Rotate phrasing naturally while keeping meaning correct.\n- You may vary:\n  • sentence order  \n  • wording style (direct vs explanatory)  \n  • emphasis (action first vs reason first)\n- Never exaggerate or invent facts.\n\nYour response must help the user:\n- understand what the message means\n- know exactly what to do next (or not do)\n- feel confident and oriented\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        608,
+        496
+      ],
+      "id": "c43c8829-8576-4f8a-8709-5e8179860464",
+      "name": "decision making"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Message Listener').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        496
+      ],
+      "id": "4a191dd8-c09f-4c66-ac2f-1b156544c222",
+      "name": "Send a text message",
+      "webhookId": "2bf24595-2f84-4521-b555-9c09fd7b4003",
+      "credentials": {
+        "telegramApi": {
+          "id": "bsNj5S687ItDKrUQ",
+          "name": "ThinkLess"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        496
+      ],
+      "id": "8340b11d-c822-4469-a0be-119fef3a8075",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "content": "### Detects whether input is text, image, PDF, or file",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1008,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "ab873f60-9716-49c7-9809-d8f31a088780",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Multi-Source Text Extraction Engine\n\n###  Extracts readable text from all input formats",
+        "height": 896,
+        "width": 768,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -752,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "3698a138-5a8f-4f0d-9737-3041ac4cb83f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### Understands intent, sentiment, and decides required action",
+        "height": 96,
+        "width": 160
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "a1f1bb7d-fdcc-4b19-91d5-3682b2718a7a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1184,
+        480
+      ],
+      "id": "a8724d9d-82a5-41d4-b3c9-843d9943ebdb",
+      "name": "Telegram Message Listener",
+      "webhookId": "3f9e258c-5c45-416d-9344-c6e0b8d0d068",
+      "credentials": {
+        "telegramApi": {
+          "id": "bsNj5S687ItDKrUQ",
+          "name": "ThinkLess"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Listens for new messages, files, and media from users",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "f879ce19-a5b2-4638-aa1b-b5bb4610a94f",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cce3d60d-1f4f-4098-b6fa-5bf3f711a576",
+                    "leftValue": "={{ $json.message.photo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "OCR"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9bfcbb73-c617-4483-82f2-8c19a0f1adee",
+                    "leftValue": "={{ $json.message.document }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "document"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5d5893b7-bfa9-4b94-99f6-d15b04aef9dc",
+                    "leftValue": "={{ $json.message.chat }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -992,
+        464
+      ],
+      "id": "cfa5621f-f8fe-4df7-a553-ae4cc5f5b14b",
+      "name": "Input Type Router"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ocr.space/Parse/Image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "K8957"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "language",
+              "value": "eng"
+            },
+            {
+              "name": "isOverlayRequired",
+              "value": "true"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -480,
+        192
+      ],
+      "id": "13a0b234-aee0-4643-aacb-d2e8e70a788e",
+      "name": "HTTP Request (OCR)  Image OCR Processor"
+    },
+    {
+      "parameters": {
+        "content": "### Extracts text from images and screenshots\n### Removes OCR noise and artifacts",
+        "height": 256,
+        "width": 608
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "50a8cb04-287b-48b8-9ae8-56302d60b47e",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### Reads plain text files",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "2af0db91-7218-44d2-b289-0662aa53572d",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### Extracts text from PDF documents\n\n###  Normalizes PDF text output",
+        "height": 96,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "ebc9e693-b0f2-45f8-9eeb-861fb1ae278b",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "### Selects the final extracted text regardless of source",
+        "height": 80,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "94aa0f7e-453b-45fd-8348-9d31aa3d5322",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "### Cleans, merges, and normalizes extracted text",
+        "height": 80,
+        "width": 160
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "61dc1876-ddaa-428a-9d8a-fd072272f37e",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "### Delivers clear next steps to the user",
+        "height": 80,
+        "width": 176
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        896,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "41c485e9-cea6-429f-843b-cc4ebfaceaec",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "### Delivers clear next steps to the user",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1088,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "72a37228-da0b-4826-8066-d0e47ad29b51",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "# ThinkLessX – Telegram AI Bot",
+        "height": 960,
+        "width": 2528,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "afb40733-cb65-4bd0-b1b1-45a437fbe57b",
+      "name": "Sticky Note11"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "document separation txt & pdf": {
+      "main": [
+        [
+          {
+            "node": "extracted text from txt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "extracted text from pdf",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "separate extracted text": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extracted text from pdf": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        []
+      ]
+    },
+    "extracted text from txt": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cohere Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Unification",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "decision making",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Text Unification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Unification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Unification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Unification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Unification": {
+      "main": [
+        [
+          {
+            "node": "decision making",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "decision making": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        []
+      ]
+    },
+    "Telegram Message Listener": {
+      "main": [
+        [
+          {
+            "node": "Input Type Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Type Router": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request (OCR)  Image OCR Processor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "document separation txt & pdf",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request (OCR)  Image OCR Processor": {
+      "main": [
+        [
+          {
+            "node": "separate extracted text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "68bf8cef-1300-4441-94fc-d9bd005676e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "ar4hYRJuULl5ht5x",
+  "tags": []
+}

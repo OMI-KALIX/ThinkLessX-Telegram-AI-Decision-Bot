@@ -21,6 +21,23 @@ This project demonstrates a real-world, production-grade **n8n automation** that
 
 ---
 
+## 🤖 Telegram Bot (Live Demo)
+
+🔗 **Bot Link:** [https://t.me/ThinkLessX_bot](https://t.me/ThinkLessX_bot)
+
+**Note:**
+This bot is running on a **locally self-hosted n8n setup** (not a VPS).
+Since it relies on **HTTPS tunneling** for external access, the bot may not always be online.
+
+If you test the bot and it’s inactive, please **notify me via LinkedIn or email**, and I’ll bring it online for you 😊
+Your feedback and testing support are highly appreciated.
+
+📬 **Contact:**
+
+* LinkedIn: your LinkedIn profile link
+* Email: your email address
+---
+
 ## 🚀 What This Automation Does
 
 * Listens to incoming Telegram messages (text, images, PDFs, files)
@@ -61,6 +78,14 @@ Intent & Decision Engine
    ↓
 Telegram Decision Reply
 ```
+### 🖼️ Automation Workflow:
+![Workflow Screenshot](assets/workflow-diagram.png)
+
+
+### 🖼️ Generated results:
+![mailed Screenshot](assets/bot_response_2.png)
+
+![mailed Screenshot](assets/bot_response_1.png)
 
 ---
 
@@ -129,12 +154,6 @@ This is ideal for:
 * students
 * automation builders
 * anyone overwhelmed by incoming information
-
----
-
-## 📸 Automation Workflow Images
-
-> See `/assets/workflow-diagram.png` for a full visual breakdown of the automation.
 
 ---
 

@@ -29,13 +29,12 @@ This project demonstrates a real-world, production-grade **n8n automation** that
 This bot is running on a **locally self-hosted n8n setup** (not a VPS).
 Since it relies on **HTTPS tunneling** for external access, the bot may not always be online.
 
-If you test the bot and it’s inactive, please **notify me via LinkedIn or email**, and I’ll bring it online for you 😊
+If you test the bot and it’s inactive, please **notify me via LinkedIn only**, and I’ll bring it online for you 😊
 Your feedback and testing support are highly appreciated.
 
 📬 **Contact:**
 
-* LinkedIn: your LinkedIn profile link
-* Email: your email address
+* LinkedIn: www.linkedin.com/in/omkar-sawant-953b47281
 ---
 
 ## 🚀 What This Automation Does

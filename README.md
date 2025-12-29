@@ -85,14 +85,7 @@ This setup is fully modular and can run with **local LLMs** or **cloud-based mod
 ```
 ThinkLessX/
 ├── workflows/
-│   ├── telegram-trigger.json
-│   ├── input-routing.json
-│   ├── text-extraction/
-│   │   ├── ocr-workflow.json
-│   │   ├── pdf-extraction.json
-│   │   └── txt-extraction.json
-│   ├── text-unification.json
-│   └── decision-engine.json
+│      └── ThinkLessX.json
 │
 ├── prompts/
 │   ├── text-unification-prompt.txt
